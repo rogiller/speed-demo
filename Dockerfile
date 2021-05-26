@@ -7,7 +7,7 @@ FROM adoptopenjdk/openjdk11:jre-11.0.10_9
 VOLUME /tmp
 
 # Spring Boot port 8500 available to the host
-EXPOSE 8080
+EXPOSE 8090
 
 # Set Spring Boot JAR file location
 ARG JAR_FILE=build/libs/*.jar
