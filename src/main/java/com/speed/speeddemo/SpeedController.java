@@ -32,9 +32,11 @@ public class SpeedController {
 
     @GetMapping("/")
     public ResponseEntity<Map<String, Object>> fibonacci(@RequestParam(required = false, defaultValue = "1") long fib){
+        LOG.info("Computing slow fibonacci: {}", fib);
         Map<String, Object> result = new HashMap<>();
         result.put("vmUUID", VM_UUID);
         result.put("fib", slowFibonacci(fib));
+        LOG.info("slow fibonacci result: {}", result.get("fib"));
         return ok(result);
     }
 
