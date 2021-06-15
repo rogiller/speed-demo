@@ -1,0 +1,59 @@
+# Log into flex5-microk8s Droplet
+ssh root@167.99.57.223
+
+# BUILD
+
+# Get a JAR
+./gradlew clean build
+ 
+java -jar build/libs/speed-demo-0.0.1-SNAPSHOT.jar
+
+# Docker Jazz
+docker build -t flexrentalsolutions/speed-demo .
+
+docker run -p 8090:8090 -t flexrentalsolutions/speed-demo
+
+docker push flexrentalsolutions/speed-demo:latest
+
+docker pull flexrentalsolutions/speed-demo:latest
+
+# DEPLOYMENT
+
+# kubectl jazz
+kubectl create deployment --image=flexrentalsolutions/speed-demo:latest speed-demo
+
+kubectl scale deployments/speed-demo --replicas=2
+
+kubectl expose deployment speed-demo  --name speed-demo-service --type NodePort --port 80 --target-port 8090
+
+kubectl delete deployment speed-demo
+
+kubectl rollout restart deployment/speed-demo
+
+
+# Clean up old replicasets
+kubectl delete $(kubectl get all | grep replicaset.apps | grep "0         0         0" | cut -d' ' -f 1)
+
+
+http://167.99.57.223:<node-port>
+
+
+kubectl logs -f speed-demo-****
+
+
+# Kubetail rocks!
+https://github.com/johanhaleby/kubetail
+
+
+# See usage
+kubectl top pod
+
+# Pod logs go to here on the host:
+/var/log/pods
+
+
+kubectl get pods -o wide
+
+# If you want to watch it
+kubectl get pods --watch
+kubectl get service --watch
