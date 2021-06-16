@@ -12,16 +12,16 @@ git clone https://github.com/rogiller/speed-demo.git
 java -jar build/libs/speed-demo-0.0.1-SNAPSHOT.jar
 
 # Docker Jazz
-docker build -t flexrentalsolutions/speed-demo .
+docker build -t flexrentalsolutions/speed-demo:v3 .
 
 docker run -p 8090:8090 -t flexrentalsolutions/speed-demo
 
-docker push flexrentalsolutions/speed-demo:latest
+docker push flexrentalsolutions/speed-demo:v3
 
 docker pull flexrentalsolutions/speed-demo:latest
 
 # UPDATE DEPLOYMENT
-kubectl set image deployments/speed-demo-deployment speed-demo=flexrentalsolutions/speed-demo:v2
+kubectl set image deployments/speed-demo-deployment speed-demo=flexrentalsolutions/speed-demo:v3
 kubectl rollout status deployments/speed-demo-deployment
 
 
