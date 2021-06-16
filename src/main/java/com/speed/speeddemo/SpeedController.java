@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -35,10 +37,11 @@ public class SpeedController {
 
     @GetMapping("/")
     public ResponseEntity<Map<String, Object>> fibonacci(
-            @RequestParam(required = false, defaultValue = "1") long fib){
+            @RequestParam(required = false, defaultValue = "1") long fib) throws UnknownHostException {
         LOG.info("Computing slow fibonacci: {}", fib);
         Map<String, Object> result = new HashMap<>();
         result.put("vmUUID", VM_UUID);
+        result.put("hostName", InetAddress.getLocalHost().getHostName());
         result.put("fibonacciInput", fib);
         result.put("fibonacciResult", slowFibonacci(fib));
         result.put("vmUptime", getUptimeString());
