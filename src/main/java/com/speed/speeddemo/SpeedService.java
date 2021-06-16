@@ -13,10 +13,14 @@ public class SpeedService {
     @Cacheable(value = "fibonacci", key = "#n")
     public Long slowFibonacci(long n) {
         LOG.info("NOT CACHED so computing slow fibonacci: {}", n);
+        return slowFibonacciCompute(n);
+    }
+
+    public Long slowFibonacciCompute(long n) {
         if (n <= 1) {
             return n;
         } else {
-            return slowFibonacci(n - 1) + slowFibonacci(n - 2);
+            return slowFibonacciCompute(n - 1) + slowFibonacciCompute(n - 2);
         }
     }
 }
