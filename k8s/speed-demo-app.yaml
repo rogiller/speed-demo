@@ -1,4 +1,5 @@
 apiVersion: apps/v1
+
 kind: Deployment
 metadata:
   name: speed-demo-deployment
@@ -19,3 +20,16 @@ spec:
         image: flexrentalsolutions/speed-demo:latest
         ports:
         - containerPort: 8090
+---
+kind: Service
+metadata:
+  name: speed-demo-service
+spec:
+  type: NodePort
+  selector:
+    app: speed-demo
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8090
+      nodePort: 30090
