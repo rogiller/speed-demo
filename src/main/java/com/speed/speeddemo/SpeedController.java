@@ -3,6 +3,7 @@ package com.speed.speeddemo;
 import org.apache.commons.lang3.time.DurationFormatUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,18 +27,20 @@ public class SpeedController {
 
     final String VM_UUID = UUID.randomUUID().toString();
 
-    public SpeedController(){
+    private SpeedService speedService;
+
+    public SpeedController(SpeedService speedService){
+        this.speedService = speedService;
         long fib = 46;
 
         LOG.info("Computing slow fibonacci: {}", fib);
 
-        long fibResult = slowFibonacci(fib);
+        long fibResult = speedService.slowFibonacci(fib);
 
         LOG.info("slow fibonacci result: {}", fibResult);
     }
 
     @GetMapping("/")
-    @Cacheable(value = "fibonacci", key = "#fib")
     public ResponseEntity<Map<String, Object>> fibonacci(
             @RequestParam(required = false, defaultValue = "1") long fib) throws UnknownHostException {
         LOG.info("Computing slow fibonacci: {}", fib);
@@ -45,9 +48,14 @@ public class SpeedController {
         result.put("vmUUID", VM_UUID);
         result.put("hostName", InetAddress.getLocalHost().getHostName());
         result.put("fibonacciInput", fib);
-        result.put("fibonacciResult", slowFibonacci(fib));
         result.put("vmUptime", getUptimeString());
-        LOG.info("slow fibonacci result: {}", result.get("fib"));
+        try{
+            result.put("fibonacciResult", speedService.slowFibonacci(fib));
+        }catch(Exception e){
+            result.put("fibonacciResult", e.getMessage());
+            LOG.error("", e);
+        }
+        LOG.info("slow fibonacci result: {}", result.get("fibonacciResult"));
         return ok(result);
     }
 
@@ -57,13 +65,7 @@ public class SpeedController {
         return ok("JVM Exited!");
     }
 
-    public static long slowFibonacci(long n) {
-        if (n <= 1) {
-            return n;
-        } else {
-            return slowFibonacci(n - 1) + slowFibonacci(n - 2);
-        }
-    }
+
 
     private static String getUptimeString() {
         RuntimeMXBean run = ManagementFactory.getRuntimeMXBean();
