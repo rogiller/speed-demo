@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class SpeedService {
 
-    @Cacheable(value = "fibonacci", key = "#fib", unless = "#result == null")
+    @Cacheable(value = "fibonacci", key = "#n", unless = "#result == null")
     public Long slowFibonacci(long n) {
         if (n <= 1) {
             return n;
