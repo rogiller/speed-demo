@@ -1,6 +1,3 @@
-# Log into flex5-microk8s Droplet
-ssh root@167.99.57.223
-
 # BUILD
 
 # Get a JAR
