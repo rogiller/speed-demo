@@ -3,6 +3,7 @@ package com.speed.speeddemo;
 import org.apache.commons.lang3.time.DurationFormatUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -36,6 +37,7 @@ public class SpeedController {
     }
 
     @GetMapping("/")
+    @Cacheable(value = "fibonacci", key = "#fib")
     public ResponseEntity<Map<String, Object>> fibonacci(
             @RequestParam(required = false, defaultValue = "1") long fib) throws UnknownHostException {
         LOG.info("Computing slow fibonacci: {}", fib);
