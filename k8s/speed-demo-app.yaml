@@ -59,7 +59,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: redis-service
+  name: redis-service #Spring Boot will talk to redis by connecting to redis-service:80
 spec:
   type: NodePort
   selector:
