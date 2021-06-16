@@ -1,5 +1,4 @@
 apiVersion: apps/v1
-
 kind: Deployment
 metadata:
   name: speed-demo-deployment
@@ -21,6 +20,7 @@ spec:
         ports:
         - containerPort: 8090
 ---
+apiVersion: apps/v1
 kind: Service
 metadata:
   name: speed-demo-service
