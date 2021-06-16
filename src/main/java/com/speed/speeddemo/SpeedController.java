@@ -41,7 +41,6 @@ public class SpeedController {
     @GetMapping("/")
     public ResponseEntity<Map<String, Object>> fibonacci(
             @RequestParam(required = false, defaultValue = "1") long fib) throws UnknownHostException {
-        LOG.info("Computing slow fibonacci: {}", fib);
         Map<String, Object> result = new HashMap<>();
         result.put("vmUUID", VM_UUID);
         result.put("hostName", InetAddress.getLocalHost().getHostName());
@@ -53,7 +52,7 @@ public class SpeedController {
             result.put("fibonacciResult", e.getMessage());
             LOG.error("", e);
         }
-        LOG.info("slow fibonacci result: {}", result.get("fibonacciResult"));
+        LOG.info("Slow fibonacci result: {}", result.get("fibonacciResult"));
         return ok(result);
     }
 
