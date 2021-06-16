@@ -29,13 +29,6 @@ public class SpeedController {
 
     public SpeedController(SpeedService speedService){
         this.speedService = speedService;
-        long fib = 46;
-
-        LOG.info("Computing slow fibonacci: {}", fib);
-
-        long fibResult = speedService.slowFibonacci(fib);
-
-        LOG.info("slow fibonacci result: {}", fibResult);
     }
 
     @GetMapping("/")
