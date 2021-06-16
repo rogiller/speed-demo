@@ -20,18 +20,9 @@ docker push flexrentalsolutions/speed-demo:latest
 
 docker pull flexrentalsolutions/speed-demo:latest
 
-# DEPLOYMENT
-
-# kubectl jazz
-kubectl create deployment --image=flexrentalsolutions/speed-demo:latest speed-demo
-
-kubectl scale deployments/speed-demo --replicas=2
-
-kubectl expose deployment speed-demo  --name speed-demo-service --type NodePort --port 80 --target-port 8090
-
-kubectl delete deployment speed-demo
-
-kubectl rollout restart deployment/speed-demo
+# UPDATE DEPLOYMENT
+kubectl set image deployments/speed-demo-deployment speed-demo=flexrentalsolutions/speed-demo:v2
+kubectl rollout status deployments/speed-demo-deployment
 
 
 # Clean up old replicasets
