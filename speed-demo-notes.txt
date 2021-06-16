@@ -1,3 +1,9 @@
+# Setup server
+sudo snap install microk8s --classic
+microk8s enable dns
+echo "alias kubectl='microk8s.kubectl'" > ~/.bash_aliases && . ~/.bash_aliases
+git clone https://github.com/rogiller/speed-demo.git
+
 # BUILD
 
 # Get a JAR
