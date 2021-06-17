@@ -1,43 +1,40 @@
-# Setup server
+# SERVER SETUP
 sudo snap install microk8s --classic
 microk8s enable dns
 echo "alias kubectl='microk8s.kubectl'" > ~/.bash_aliases && . ~/.bash_aliases
 git clone https://github.com/rogiller/speed-demo.git
 
-# BUILD
-
-# Get a JAR
+# BUILD JAR
 ./gradlew clean build
- 
-java -jar build/libs/speed-demo-0.0.1-SNAPSHOT.jar
 
-# Docker Jazz
-docker build -t flexrentalsolutions/speed-demo:v4 .
+# IMAGE BUILD & PUSH
+docker build -t flexrentalsolutions/speed-demo:v8 .
+docker push flexrentalsolutions/speed-demo:v8
 
-docker push flexrentalsolutions/speed-demo:v4
-
-docker run -p 8090:8090 -t flexrentalsolutions/speed-demo
-
-docker pull flexrentalsolutions/speed-demo:latest
+# RUN ALL THE STUFF
+kubectl apply -f speed-demo-app.yaml
 
 # UPDATE DEPLOYMENT
-kubectl set image deployments/speed-demo-deployment speed-demo=flexrentalsolutions/speed-demo:v4
+kubectl set image deployments/speed-demo-deployment speed-demo=flexrentalsolutions/speed-demo:v8
 kubectl rollout status deployments/speed-demo-deployment
 
+# SECRET DISTRIBUTION
+# https://kubernetes.io/docs/tasks/inject-data-application/distribute-credentials-secure/
+kubectl create secret generic speed-demo-secret --from-literal=SPEED_DEMO_JDBC_URL='<insert>' --from-literal=SPEED_DEMO_JDBC_PASSWORD='<insert>'
 
-# Clean up old replicasets
-kubectl delete $(kubectl get all | grep replicaset.apps | grep "0         0         0" | cut -d' ' -f 1)
 
-
-http://167.99.57.223:<node-port>
-
+# LOGGING
 
 kubectl logs -f speed-demo-****
 
+# Aggregated logging ::: https://github.com/johanhaleby/kubetail
+kubetail speed-demo
 
-# Kubetail rocks!
-https://github.com/johanhaleby/kubetail
 
+# RANDOM STUFF
+
+# Clean up old replicasets
+kubectl delete $(kubectl get all | grep replicaset.apps | grep "0         0         0" | cut -d' ' -f 1)
 
 # See usage
 kubectl top pod
@@ -52,5 +49,9 @@ kubectl get pods -o wide
 kubectl get pods --watch
 kubectl get service --watch
 
-# Template for creating a secret
-kubectl create secret generic speed-demo-secret --from-literal=SPEED_DEMO_JDBC_URL='<insert>' --from-literal=SPEED_DEMO_JDBC_PASSWORD='<insert>'
+
+docker run -p 8090:8090 -t flexrentalsolutions/speed-demo
+docker pull flexrentalsolutions/speed-demo:latest
+java -jar build/libs/speed-demo-0.0.1-SNAPSHOT.jar
+
+
