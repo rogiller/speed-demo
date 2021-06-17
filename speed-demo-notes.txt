@@ -51,3 +51,6 @@ kubectl get pods -o wide
 # If you want to watch it
 kubectl get pods --watch
 kubectl get service --watch
+
+# Template for creating a secret
+kubectl create secret generic speed-demo-secret --from-literal=SPEED_DEMO_JDBC_URL='<insert>' --from-literal=SPEED_DEMO_JDBC_PASSWORD='<insert>'

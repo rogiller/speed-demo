@@ -17,6 +17,9 @@ spec:
       containers:
       - name: speed-demo
         image: flexrentalsolutions/speed-demo:latest
+        envFrom:
+          - secretRef:
+              name: speed-demo-secret
         ports:
         - containerPort: 8090
 ---

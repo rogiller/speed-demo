@@ -12,9 +12,11 @@ import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.*;
 
 import static org.springframework.http.ResponseEntity.*;
 
@@ -60,6 +62,33 @@ public class SpeedController {
     private static String getUptimeString() {
         RuntimeMXBean run = ManagementFactory.getRuntimeMXBean();
         return DurationFormatUtils.formatDuration(run.getUptime(), "d' day, 'H' hour, 'm' min, 's' sec'");
+    }
+
+    @GetMapping("/mysql")
+    public List<String> remoteMysql() throws ClassNotFoundException {
+
+        List<String> stringList = new ArrayList<>();
+
+        Class.forName("com.mysql.cj.jdbc.Driver");
+
+        String jdbcUrl = System.getenv("SPEED_DEMO_JDBC_URL");
+        String jdbcPassword = System.getenv("SPEED_DEMO_JDBC_PASSWORD");
+
+        try(Connection con= DriverManager.getConnection(
+                jdbcUrl,"root", jdbcPassword)){
+
+            Statement stmt=con.createStatement();
+            ResultSet rs=stmt.executeQuery("select * from st_biz_location");
+
+            while(rs.next()){
+                stringList.add(rs.getString("id"));
+            }
+
+        }catch(Exception e){
+            LOG.error("", e);
+        }
+
+        return stringList;
     }
 
 }
