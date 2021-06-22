@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: speed-demo
-        image: flexrentalsolutions/speed-demo:latest
+        image: flexrentalsolutions/speed-demo:v8
         envFrom:
           - secretRef:
               name: speed-demo-secret
