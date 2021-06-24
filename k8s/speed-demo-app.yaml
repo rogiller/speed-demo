@@ -5,7 +5,7 @@ metadata:
   labels:
     app: speed-demo
 spec:
-  replicas: 2
+  replicas: 3
   selector:
     matchLabels:
       app: speed-demo
@@ -72,3 +72,13 @@ spec:
       port: 80
       targetPort: 6379
       nodePort: 30079
+---
+apiVersion: "extensions/v1beta1"
+kind: "Ingress"
+metadata:
+  name: "speed-demo-lb"
+  namespace: "default"
+spec:
+  backend:
+    serviceName: "speed-demo-service"
+    servicePort: 80
