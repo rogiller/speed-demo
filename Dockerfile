@@ -1,12 +1,7 @@
-#FROM adoptopenjdk/openjdk8:jre8u292-b10-alpine
-
-FROM adoptopenjdk/openjdk11:jre-11.0.10_9
-
-#FROM adoptopenjdk/openjdk16:jre-16.0.1_9-alpine
+FROM openjdk:17-jdk-slim-buster
 
 VOLUME /tmp
 
-# Spring Boot port 8500 available to the host
 EXPOSE 8090
 
 # Set Spring Boot JAR file location
