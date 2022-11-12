@@ -62,6 +62,18 @@ public class SpeedController {
         return ok(book);
     }
 
+    @GetMapping("/eatMemory")
+    public void eatAllMemory(){
+        LOG.info("Beginning to eat all available memory...");
+        Vector v = new Vector();
+        while (true) {
+            byte [] b  = new byte[1048576];
+            v.add(b);
+            Runtime rt = Runtime.getRuntime();
+            LOG.info("Free memory: " + rt.freeMemory());
+        }
+    }
+
     @GetMapping("/exit")
     public ResponseEntity<String> exit(){
         System.exit(0);

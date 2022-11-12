@@ -1,0 +1,19 @@
+version: '2'
+services:
+  speed-demo-service:
+    container_name: speed-demo
+    build:
+      dockerfile: Dockerfile
+    image: speed-demo:latest
+    ports:
+      - "8090:8090"
+    networks:
+      - speed-demo-network
+  redis-service:
+    container_name: redis
+    image: redis:7.0.5
+    networks:
+      - speed-demo-network
+networks:
+  speed-demo-network:
+    driver: bridge
