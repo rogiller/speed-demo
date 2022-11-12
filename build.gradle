@@ -6,8 +6,7 @@ plugins {
 
 group = 'com.speed'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = "17.PREVIEW"
-targetCompatibility = "17.PREVIEW"
+sourceCompatibility = "11"
 
 repositories {
 	mavenCentral()
@@ -25,4 +24,3 @@ dependencies {
 test {
 	useJUnitPlatform()
 }
-

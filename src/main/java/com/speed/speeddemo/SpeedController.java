@@ -1,6 +1,5 @@
 package com.speed.speeddemo;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DurationFormatUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -54,21 +53,13 @@ public class SpeedController {
     }
 
     @GetMapping("/java17")
-    public ResponseEntity<String> java17(@RequestParam(required = false) Object param){
+    public ResponseEntity<Book> java17(
+            @RequestParam(required = false) String title,
+            @RequestParam(required = false) String author){
 
-        try {
-            param = new BigDecimal(param.toString());
-        }catch(Exception e){}
+        Book book = new Book(title, author);
 
-
-        String result = switch (param) {
-            case Number n -> "It's an integer";
-            case String s -> "It's a string";
-            case null -> "It is null";
-            default -> "It is an object";
-        };
-
-        return ok(result);
+        return ok(book);
     }
 
     @GetMapping("/exit")
