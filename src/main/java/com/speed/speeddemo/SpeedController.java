@@ -74,6 +74,19 @@ public class SpeedController {
         }
     }
 
+    private static Vector staticVector = new Vector();
+    @GetMapping("/eatMemoryStatic")
+    public void eatAllMemoryStatic(){
+        LOG.info("Beginning to eat all available memory...");
+
+        while (true) {
+            byte [] b  = new byte[1048576];
+            staticVector.add(b);
+            Runtime rt = Runtime.getRuntime();
+            LOG.info("Free memory: " + rt.freeMemory());
+        }
+    }
+
     @GetMapping("/exit")
     public ResponseEntity<String> exit(){
         System.exit(0);
