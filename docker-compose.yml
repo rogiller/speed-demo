@@ -9,11 +9,13 @@ services:
       - "8090:8090"
     networks:
       - speed-demo-network
+    restart: always
   redis-service:
     container_name: redis
     image: redis:7.0.5
     networks:
       - speed-demo-network
+    restart: always
 networks:
   speed-demo-network:
     driver: bridge
