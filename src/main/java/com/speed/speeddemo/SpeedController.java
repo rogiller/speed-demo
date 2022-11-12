@@ -1,5 +1,6 @@
 package com.speed.speeddemo;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DurationFormatUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;
+import java.math.BigDecimal;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.sql.Connection;
@@ -51,17 +53,28 @@ public class SpeedController {
         return ok(result);
     }
 
+    @GetMapping("/java17")
+    public ResponseEntity<String> java17(@RequestParam(required = false) Object param){
+
+        try {
+            param = new BigDecimal(param.toString());
+        }catch(Exception e){}
+
+
+        String result = switch (param) {
+            case Number n -> "It's an integer";
+            case String s -> "It's a string";
+            case null -> "It is null";
+            default -> "It is an object";
+        };
+
+        return ok(result);
+    }
+
     @GetMapping("/exit")
     public ResponseEntity<String> exit(){
         System.exit(0);
         return ok("JVM Exited!");
-    }
-
-
-
-    private static String getUptimeString() {
-        RuntimeMXBean run = ManagementFactory.getRuntimeMXBean();
-        return DurationFormatUtils.formatDuration(run.getUptime(), "d' day, 'H' hour, 'm' min, 's' sec'");
     }
 
     @GetMapping("/mysql")
@@ -89,6 +102,11 @@ public class SpeedController {
         }
 
         return stringList;
+    }
+
+    private static String getUptimeString() {
+        RuntimeMXBean run = ManagementFactory.getRuntimeMXBean();
+        return DurationFormatUtils.formatDuration(run.getUptime(), "d' day, 'H' hour, 'm' min, 's' sec'");
     }
 
 }
